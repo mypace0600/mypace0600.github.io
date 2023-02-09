@@ -72,6 +72,9 @@ function divide(tempList) {
     var i;
     for (i = 0; i < tempList.length; i++) {
         if (tempList[i] == "/") {
+            if(tempList[i-2]=="-"){
+                tempList.splice(i-2,2,'+',tempList[i-1]*-1);
+            }
             var result = Number(tempList[i - 1]) / Number(tempList[i + 1]);
             tempList.splice(i - 1, 3, 0, '+', result);
         }
