@@ -15,9 +15,10 @@ inputNumbers.forEach(inputNumber => {
 const allClear = document.querySelector(".allClear").addEventListener("click", function() {
     value = "";
     document.querySelector("input[type=text]").value = "";
+    historySave = [];
 })
 
-var formula = [];
+let historySave = [];
 
 const calculate = document.querySelector(".calculate").addEventListener("click", function() {
     var valueString = document.querySelector("input[type=text").value + "=";
@@ -59,6 +60,8 @@ const calculate = document.querySelector(".calculate").addEventListener("click",
         finalResult=null;
     }
     document.querySelector("input[type=text").value = finalResult;
+   
+    historySave.push(value+"="+finalResult+'\r\n');
     value = finalResult;
 });
 
@@ -131,3 +134,7 @@ function minus(tempList) {
         }
     }
 }
+
+const historyBtn = document.querySelector(".historyBtn").addEventListener("click", function() {
+    alert(historySave);
+})
