@@ -138,3 +138,67 @@ function minus(tempList) {
 const historyBtn = document.querySelector(".historyBtn").addEventListener("click", function() {
     alert(historySave);
 })
+
+function calculateExcute(){
+    let valueString = document.querySelector("#calculatedValue").innerHTML + "=";
+    let valueList = valueString.split("");
+    console.log("valueList :{}",valueList);
+
+    let mathKey = ["+", "-", "*", "/", "%", "="];
+    let index;
+    let tempIndex = 0;
+    let number;
+    let tempList = [];
+    
+    for (index = 0; index < valueList.length; index++) {
+        if (mathKey.indexOf(valueList[index])>=0) {
+            console.log("tempIndex= " + tempIndex);
+            console.log("index= " + index);
+            number = valueString.substring(tempIndex, index);
+            tempList.push(number);
+            tempList.push(valueList[index]);
+            tempIndex = index + 1;
+        }
+    }
+    console.log("tempList :{}",tempList);
+
+    checkFormula(tempList);
+    console.log("after checkFormula :{}",tempList);
+    times(tempList);
+    divide(tempList);
+    percent(tempList);
+    plus(tempList);
+    minus(tempList);
+
+    let finalIndex = tempList.length;
+    let finalResult = tempList[finalIndex-2];
+    console.log("finalResult :{}",finalResult);
+    console.log("finalResult type:{}",typeof(finalResult));
+    if(isNaN(finalResult)){
+        alert("수식 오류!");
+        finalResult=null;
+    }
+    document.querySelector("#calculatedValue").innerHTML = finalResult;
+   
+    historySave.push(value+"="+finalResult+'\r\n');
+    value = finalResult;
+}
+
+document.addEventListener('keydown',(event)=>{
+    let pressedKey;
+    if(event.key == "Enter"){
+        pressedKey ="";
+        calculateExcute();
+    } else if (event.key == "Shift"){
+        pressedKey= "";
+    } else {
+        pressedKey = event.key;
+    }
+    console.log("keyboard pressed :{}",pressedKey);
+    if (value != null) {
+        value = value + pressedKey;
+        document.querySelector("#calculatedValue").innerHTML = value;
+    } else {
+        document.querySelector("#calculatedValue").innerHTML = pressedKey;
+    } 
+})
