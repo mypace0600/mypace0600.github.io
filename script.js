@@ -1,35 +1,35 @@
 const inputNumbers = document.querySelectorAll(".numberKey");
-var value = document.querySelector("input[type=text]").value;
+let value = document.querySelector("#calculatedValue").innerHTML;
 
 inputNumbers.forEach(inputNumber => {
     inputNumber.addEventListener("click", function() {
         if (value != null) {
             value = value + inputNumber.innerHTML;
-            document.querySelector("input[type=text]").value = value;
+            document.querySelector("#calculatedValue").innerHTML = value;
         } else {
-            document.querySelector("input[type=text]").value = inputNumber.innerHTML;
+            document.querySelector("#calculatedValue").innerHTML = inputNumber.innerHTML;
         }
     })
 })
 
 const allClear = document.querySelector(".allClear").addEventListener("click", function() {
     value = "";
-    document.querySelector("input[type=text]").value = "";
+    document.querySelector("#calculatedValue").innerHTML = 0;
     historySave = [];
 })
 
 let historySave = [];
 
 const calculate = document.querySelector(".calculate").addEventListener("click", function() {
-    var valueString = document.querySelector("input[type=text").value + "=";
-    var valueList = valueString.split("");
+    let valueString = document.querySelector("#calculatedValue").innerHTML + "=";
+    let valueList = valueString.split("");
     console.log("valueList :{}",valueList);
 
-    var mathKey = ["+", "-", "*", "/", "%", "="];
-    var index;
-    var tempIndex = 0;
-    var number;
-    var tempList = [];
+    let mathKey = ["+", "-", "*", "/", "%", "="];
+    let index;
+    let tempIndex = 0;
+    let number;
+    let tempList = [];
     
     for (index = 0; index < valueList.length; index++) {
         if (mathKey.indexOf(valueList[index])>=0) {
@@ -51,27 +51,27 @@ const calculate = document.querySelector(".calculate").addEventListener("click",
     plus(tempList);
     minus(tempList);
 
-    var finalIndex = tempList.length;
-    var finalResult = tempList[finalIndex-2];
+    let finalIndex = tempList.length;
+    let finalResult = tempList[finalIndex-2];
     console.log("finalResult :{}",finalResult);
     console.log("finalResult type:{}",typeof(finalResult));
     if(isNaN(finalResult)){
         alert("수식 오류!");
         finalResult=null;
     }
-    document.querySelector("input[type=text").value = finalResult;
+    document.querySelector("#calculatedValue").innerHTML = finalResult;
    
     historySave.push(value+"="+finalResult+'\r\n');
     value = finalResult;
 });
 
 function checkFormula(tempList){
-    var i;
+    let i;
     for (i=0;i<tempList.length;i++){
-        if(tempList[i]=="-"){
-            if(tempList[i-1]=="" && i == 1){
+        if(tempList[i] === "-"){
+            if(tempList[i-1] === "" && i === 1){
                 tempList.splice(i-1,3,0,"+",tempList[i+1]*-1);
-            } else if (tempList[i-1]=="" && (tempList[i-2]=="*" || tempList[i-2]=="/")){
+            } else if (tempList[i-1] === "" && (tempList[i-2] === "*" || tempList[i-2] === "/")){
                 tempList.splice(i-1,3,tempList[i+1]*-1,"*",1);
             }
         }
@@ -80,56 +80,56 @@ function checkFormula(tempList){
 
 
 function times(tempList) {
-    var i;
+    let i;
     for (i = 0; i < tempList.length; i++) {
-        if (tempList[i] == "*") {
-            if(tempList[i-2]=="-"){
+        if (tempList[i] === "*") {
+            if(tempList[i-2] ==="-"){
                 tempList.splice(i-2,2,"+",tempList[i-1]*-1);
             }
-            var result = Number(tempList[i - 1]) * Number(tempList[i + 1]);
+            let result = Number(tempList[i - 1]) * Number(tempList[i + 1]);
             tempList.splice(i - 1, 3, 0, '+', result);
         }
     }
 }
 
 function divide(tempList) {
-    var i;
+    let i;
     for (i = 0; i < tempList.length; i++) {
-        if (tempList[i] == "/") {
-            if(tempList[i-2]=="-"){
+        if (tempList[i] === "/") {
+            if(tempList[i-2]==="-"){
                 tempList.splice(i-2,2,"+",tempList[i-1]*-1);
             }
-            var result = Number(tempList[i - 1]) / Number(tempList[i + 1]).toFixed(5);
+            let result = Number(tempList[i - 1]) / Number(tempList[i + 1]).toFixed(5);
             tempList.splice(i - 1, 3, 0, '+', result);
         }
     }
 }
 
 function percent(tempList){
-    var i; 
+    let i; 
     for (i = 0; i < tempList.length; i++) {
-        if (tempList[i] == "%") {
-            var result = Number(tempList[i - 1]) % Number(tempList[i + 1]).toFixed(5);
+        if (tempList[i] === "%") {
+            let result = Number(tempList[i - 1]) % Number(tempList[i + 1]).toFixed(5);
             tempList.splice(i - 1, 3, 0, '+', result);
         }
     }
 }
 
 function plus(tempList) {
-    var i;
+    let i;
     for (i = 0; i < tempList.length; i++) {
-        if (tempList[i] == "+") {
-            var result = Number(tempList[i - 1] )+ Number(tempList[i + 1]);
+        if (tempList[i] === "+") {
+            let result = Number(tempList[i - 1] )+ Number(tempList[i + 1]);
             tempList.splice(i - 1, 3, 0, '+', result);
         }
     }
 }
 
 function minus(tempList) {
-    var i;
+    let i;
     for (i = 0; i < tempList.length; i++) {
-        if (tempList[i] == "-") {
-            var result = Number(tempList[i - 1]) - Number(tempList[i + 1]);
+        if (tempList[i] === "-") {
+            let result = Number(tempList[i - 1]) - Number(tempList[i + 1]);
             tempList.splice(i - 1, 3, 0, '+', result);
         }
     }
