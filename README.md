@@ -18,3 +18,5 @@ todolist
 15. 버튼 클릭시 색상 변화 및 마우스 커서가 손가락으로 나오게 수정
 
 결과물 사이트 : https://mypace0600.github.io/
+
+참고 : stack 계산기 - https://www.youtube.com/watch?v=MYk4autDAJ0
