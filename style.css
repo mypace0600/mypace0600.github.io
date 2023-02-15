@@ -50,10 +50,6 @@ html, body {
       height: 30px;
       background-color: white;
   }
-  .wideKey{
-      width:210px;
-      height:30px;
-  }
   .mathKey{
       display: flex;
       align-items: center;
