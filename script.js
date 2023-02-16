@@ -208,11 +208,20 @@ const allClear = document.querySelector(".allClear").addEventListener("click", f
     formula = [];
     result = [];
     historySave = [];
+    deleteModalHistory();
 })
 
 // 계산 history 모달창
-
 const openModal = () =>{
+    console.log("historySave :{}",historySave);
+    historySave.forEach(element => {
+        console.log(element);
+        let historyDiv = document.getElementById("history");
+        let row = document.createElement("div");
+        row.setAttribute("class","historyRow");
+        row.innerHTML = element;
+        historyDiv.appendChild(row);
+    });
     document.querySelector(".modal").classList.remove("hidden");
 }
 const closeModal = () =>{
@@ -220,3 +229,13 @@ const closeModal = () =>{
 }
 document.querySelector(".historyBtn").addEventListener("click", openModal);
 document.querySelector(".closeBtn").addEventListener("click",closeModal);
+document.querySelector(".bg").addEventListener("click", closeModal);
+
+
+// history 모달 내용 삭제 - 작업중
+function deleteModalHistory(){
+    var historyDiv = document.getElementById("history");
+    while(historyDiv.hasChildNodes){
+        historyDiv.removeChild(historyDiv.firstChild);
+    }
+}
