@@ -10,14 +10,14 @@ let temp = [];
 let value = document.querySelector("#calculatedValue").innerHTML;
 
 // 마우스 입력 인식
-const inputNumbers = document.querySelectorAll(".numberKey");
-inputNumbers.forEach(inputNumber => {
-    inputNumber.addEventListener("click", function() {
+const clickKeys = document.querySelectorAll(".numberKey");
+clickKeys.forEach(clickKeys => {
+    clickKeys.addEventListener("click", function() {
         if (value != null) {
-            value = value + inputNumber.innerHTML;
+            value = value + clickKeys.innerHTML;
             document.querySelector("#calculatedValue").innerHTML = value;
         } else {
-            document.querySelector("#calculatedValue").innerHTML = inputNumber.innerHTML;
+            document.querySelector("#calculatedValue").innerHTML = clickKeys.innerHTML;
         }
     })
 })
@@ -285,3 +285,14 @@ function deleteModalHistory(){
     var rows = document.querySelectorAll(".historyRow");
     rows.forEach(element => element.remove());
 }
+
+// 버튼 마우스 오버 아웃 기능
+const allKeys = document.querySelectorAll(".key");
+allKeys.forEach(element=>{
+    element.addEventListener('mouseover',(event)=>{
+        element.classList.add("mouseOver");
+    });
+    element.addEventListener('mouseout',(event)=>{
+        element.classList.remove("mouseOver");
+    })
+})
