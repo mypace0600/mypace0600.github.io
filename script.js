@@ -4,6 +4,7 @@ let historySave = [];
 let tempList = [];
 let formula = [];
 let result = [];
+let temp = [];
 
 // 현재 창에 입력된 값
 let value = document.querySelector("#calculatedValue").innerHTML;
@@ -27,11 +28,14 @@ document.addEventListener('keydown',(event)=>{
     if(event.key == "Enter"){
         pressedKey ="";
         let valueString = value + "=";
-        inFixFormula(valueString);
+        formulaSplit(valueString);
         postFixFormula(tempList);
         value = calculateExcute(formula);
         valueString += value;
         historySave.push(valueString);
+        if(value==="error"){
+            value = 0;
+        }
         document.querySelector("#calculatedValue").innerHTML = value;
         tempList=[];
         formula=[];
@@ -52,23 +56,25 @@ document.addEventListener('keydown',(event)=>{
 // = 버튼 클릭 인식
 const calculate = document.querySelector(".calculate").addEventListener("click", function() {
     let valueString = value + "=";
-    inFixFormula(valueString);
+    formulaSplit(valueString);
     postFixFormula(tempList);
     value = calculateExcute(formula);
     valueString += value;
     historySave.push(valueString);
+    if(value==="error"){
+        value = 0;
+    }
     document.querySelector("#calculatedValue").innerHTML = value;
     tempList=[];
     formula=[];
     result=[];
 });
 
-// 중위표기법으로 정리
-function inFixFormula(valueString){
+// 수식에서 숫자 연산자 구분
+function formulaSplit(valueString){
     let valueList = valueString.split("");
     let tempIndex = 0;
     let number;
-    let temp = [];
     
     for (let i = 0; i < valueList.length; i++) {
         if (mathKey.indexOf(valueList[i])>=0) {
@@ -81,6 +87,39 @@ function inFixFormula(valueString){
         }
     }
     tempList.pop();
+    disticntFormula();
+}
+
+// 중복 연산자 제거 및 연산자 연속입력 수정
+function disticntFormula(){
+    let tempA = [];
+    let t = 0;
+    while(tempList[0]==="+"||tempList[0]==="*"||tempList[0]==="/"){
+        tempList.shift();
+    }
+    while(t<tempList.length){
+        if(mathKey.indexOf(tempList[t])>=0&&mathKey.indexOf(tempList[t+1])>=0){
+            if(tempList[t]===tempList[t+1]){
+                tempA.push(tempList[t]);
+                t+=2;
+            } else if (changePriority(tempList[t])>=changePriority(tempList[t+1])){
+                tempA.push(tempList[t+1]);
+                t+=2;
+            } else {
+                tempA.push(tempList[t]);
+                t++;
+            } 
+        } else {
+            tempA.push(tempList[t]);
+            t++;
+        }
+    }
+    tempList = tempA;
+    inFixFormula();
+}
+
+// 중위 표기법으로 정리
+function inFixFormula(){
     let i=0;
     while(i<tempList.length){
         if(tempList[i]==="-"){
@@ -197,22 +236,40 @@ function calculateExcute(formula){
         }
         i++;
     }
-    return result[0];
+    return checkError(result[0]);
+}
+
+// 수식 오류 확인
+function checkError(result){
+    if(isNaN(result)){
+        alert("수식 오류");
+        return "error";
+    } else {
+        return result;
+    }
 }
 
 // 전체 삭제
 const allClear = document.querySelector(".allClear").addEventListener("click", function() {
     value = "";
     document.querySelector("#calculatedValue").innerHTML = 0;
+    historySave = [];
     tempList = [];
     formula = [];
     result = [];
-    historySave = [];
+    temp = [];
+    deleteModalHistory();
 })
 
 // 계산 history 모달창
-
 const openModal = () =>{
+    historySave.forEach(element => {
+        let historyDiv = document.getElementById("history");
+        let row = document.createElement("div");
+        row.setAttribute("class","historyRow");
+        row.innerHTML = element;
+        historyDiv.appendChild(row);
+    });
     document.querySelector(".modal").classList.remove("hidden");
 }
 const closeModal = () =>{
@@ -220,3 +277,11 @@ const closeModal = () =>{
 }
 document.querySelector(".historyBtn").addEventListener("click", openModal);
 document.querySelector(".closeBtn").addEventListener("click",closeModal);
+document.querySelector(".bg").addEventListener("click", closeModal);
+
+
+// history 모달 내용 삭제
+function deleteModalHistory(){
+    var rows = document.querySelectorAll(".historyRow");
+    rows.forEach(element => element.remove());
+}
