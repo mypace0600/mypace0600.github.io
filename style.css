@@ -60,3 +60,6 @@ html, body {
       color: white;
   }
   
+  .hidden{
+    display: none;
+  }
