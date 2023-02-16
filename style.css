@@ -50,6 +50,7 @@ html, body {
       width: 30px;
       height: 30px;
       background-color: white;
+      cursor: pointer;
   }
   .mathKey{
       display: flex;
@@ -97,4 +98,8 @@ html, body {
   
   .hidden{
     display: none;
+  }
+
+  .mouseOver {
+    color: rgba(23,255,54,0.6);
   }
