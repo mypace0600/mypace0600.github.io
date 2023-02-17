@@ -168,9 +168,7 @@ function changePriority(a){
 // 후위표기법으로 변환
 function postFixFormula(tempList){
     let stackMathKey = [];
-    console.log("tempList :{}",tempList);
     for(let i = 0; i<tempList.length;i++){
-        console.log("tempList[i] :{}",tempList[i]);
         if(mathKey.indexOf(tempList[i])<0){
             formula.push(tempList[i]);
         } else {
@@ -205,14 +203,10 @@ function postFixFormula(tempList){
                 stackMathKey.push(tempList[i]);
             }
         }
-        console.log("stackMathKey :{}",stackMathKey);
-        console.log("formula :{}",formula);
     }
     if(stackMathKey.length>0){
         for(let i = stackMathKey.length-1;i>=0;i--){
             formula.push(stackMathKey[i]);
-            console.log("stackMathKey 2 :{}",stackMathKey);
-            console.log("formula 2 :{}",formula);
         }
     }
     console.log("postFixFormula :{}",formula);
