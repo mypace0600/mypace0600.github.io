@@ -25,6 +25,7 @@ clickKeys.forEach(clickKeys => {
 // 키보드 입력 인식
 document.addEventListener('keydown',(event)=>{
     let pressedKey;
+    const numberKey = /[0-9]/;
     if(event.key == "Enter"){
         pressedKey ="";
         let valueString = value + "=";
@@ -42,8 +43,10 @@ document.addEventListener('keydown',(event)=>{
         result=[];
     } else if (event.key == "Shift"){
         pressedKey= "";
-    } else {
+    } else if(mathKey.indexOf(event.key)>=0||numberKey.test(event.key)){
         pressedKey = event.key;
+    } else {
+        pressedKey = "";
     }
     if (value != null) {
         value = value + pressedKey;
