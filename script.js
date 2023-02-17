@@ -5,6 +5,7 @@ let tempList = [];
 let formula = [];
 let result = [];
 let temp = [];
+const numberKey = /[0-9]/;
 
 // 현재 창에 입력된 값
 let value = document.querySelector("#calculatedValue").innerHTML;
@@ -25,7 +26,6 @@ clickKeys.forEach(clickKeys => {
 // 키보드 입력 인식
 document.addEventListener('keydown',(event)=>{
     let pressedKey;
-    const numberKey = /[0-9]/;
     if(event.key == "Enter"){
         pressedKey ="";
         let valueString = value + "=";
@@ -90,6 +90,7 @@ function formulaSplit(valueString){
         }
     }
     tempList.pop();
+    console.log("formulaSplit :{}",tempList);
     disticntFormula();
 }
 
@@ -118,12 +119,14 @@ function disticntFormula(){
         }
     }
     tempList = tempA;
+    console.log("disticntFormula :{}",tempList);
     inFixFormula();
 }
 
 // 중위 표기법으로 정리
 function inFixFormula(){
     let i=0;
+    temp = [];
     while(i<tempList.length){
         if(tempList[i]==="-"){
             if(i===0){
@@ -149,6 +152,7 @@ function inFixFormula(){
         }
     }
     tempList = temp;
+    console.log("inFixFormula :{}",tempList);
     return tempList;
 }
 
@@ -164,8 +168,9 @@ function changePriority(a){
 // 후위표기법으로 변환
 function postFixFormula(tempList){
     let stackMathKey = [];
+    console.log("tempList :{}",tempList);
     for(let i = 0; i<tempList.length;i++){
-
+        console.log("tempList[i] :{}",tempList[i]);
         if(mathKey.indexOf(tempList[i])<0){
             formula.push(tempList[i]);
         } else {
@@ -175,7 +180,8 @@ function postFixFormula(tempList){
                 } else {
                     if(tempList[i]===")"){
                         stackMathKey.push(tempList[i]);
-                        for(let t=stackMathKey.length-1;t>=0;t--){
+                        let start = stackMathKey.indexOf("(");
+                        for(let t=stackMathKey.length-1;t>=start;t--){
                             if(stackMathKey[t]!=")" && stackMathKey[t]!="("){
                                 formula.push(stackMathKey[t]);
                             } 
@@ -199,10 +205,17 @@ function postFixFormula(tempList){
                 stackMathKey.push(tempList[i]);
             }
         }
+        console.log("stackMathKey :{}",stackMathKey);
+        console.log("formula :{}",formula);
     }
-    for(let i = stackMathKey.length-1;i>=0;i--){
-        formula.push(stackMathKey[i]);
+    if(stackMathKey.length>0){
+        for(let i = stackMathKey.length-1;i>=0;i--){
+            formula.push(stackMathKey[i]);
+            console.log("stackMathKey 2 :{}",stackMathKey);
+            console.log("formula 2 :{}",formula);
+        }
     }
+    console.log("postFixFormula :{}",formula);
     return formula;
 }
 
@@ -238,17 +251,18 @@ function calculateExcute(formula){
             result.push(c.toString());
         }
         i++;
+        console.log("calculateExcute :{}",result);
     }
-    return checkError(result[0]);
+    return checkError(result.at(0));
 }
 
 // 수식 오류 확인
-function checkError(result){
-    if(isNaN(result)){
+function checkError(t){
+    if(isNaN(t)){
         alert("수식 오류");
         return "error";
     } else {
-        return result;
+        return t;
     }
 }
 
